@@ -1,0 +1,93 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+.expo/
+.expo-shared/
+dist/
+build/
+*.apk
+*.aab
+*.ipa
+
+# Git
+.git/
+.gitignore
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Windows system files - exclude everything in AppData
+# Match from any level including absolute paths
+AppData/
+**/AppData/
+**/AppData/**/*
+AppData/Local/
+**/AppData/Local/
+**/AppData/Local/**/*
+AppData/Local/ElevatedDiagnostics/
+**/AppData/Local/ElevatedDiagnostics/
+**/AppData/Local/ElevatedDiagnostics/**/*
+**/Application Data/
+**/Local Settings/
+**/Cookies/
+**/My Documents/
+**/NetHood/
+**/PrintHood/
+**/Recent/
+**/SendTo/
+**/Start Menu/
+**/Templates/
+**/*.tmp
+**/*.temp
+**/NTUSER.DAT*
+**/ntuser.*
+**/*.lnk
+**/*.url
+**/Service Worker/
+**/CacheStorage/
+**/xml_file (*).xml
+**/ElevatedDiagnostics/
+**/ElevatedDiagnostics/**/*
+
+# Exclude problematic Windows system directories that cause permission errors
+# These patterns match from any directory level
+**/ElevatedDiagnostics/
+**/ElevatedDiagnostics/**/*
+**/Service Worker/
+**/CacheStorage/
+**/AppData/Local/ElevatedDiagnostics/
+**/AppData/Local/ElevatedDiagnostics/**/*
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Android/iOS native folders (if using CNG/Prebuild)
+/android
+/ios
+
+# Documentation
+*.md
+!README.md
+
+# Scripts
+*.ps1
+convert-icon.js
+convert-icon.ps1
+
