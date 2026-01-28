@@ -126,6 +126,12 @@ android {
             def enableLegacyPackaging = findProperty('expo.useLegacyPackaging') ?: 'false'
             useLegacyPackaging enableLegacyPackaging.toBoolean()
         }
+        resources {
+            excludes += ['META-INF/androidx.appcompat_appcompat.version']
+            excludes += ['META-INF/androidx.core_core.version']
+            excludes += ['META-INF/androidx.versionedparcelable_versionedparcelable.version']
+            pickFirsts += ['**/META-INF/**']
+        }
     }
     androidResources {
         ignoreAssetsPattern '!.svn:!.git:!.ds_store:!*.scc:!CVS:!thumbs.db:!picasa.ini:!*~'
@@ -160,6 +166,9 @@ configurations.all {
     exclude group: 'com.android.support', module: 'support-media-compat'
     exclude group: 'com.android.support', module: 'support-v4'
     exclude group: 'com.android.support', module: 'versionedparcelable'
+    exclude group: 'com.android.support', module: 'appcompat-v7'
+    exclude group: 'com.android.support', module: 'support-vector-drawable'
+    exclude group: 'com.android.support', module: 'animated-vector-drawable'
 }
 
 dependencies {
