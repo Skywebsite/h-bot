@@ -42,5 +42,8 @@
     "jimp": "^1.6.0",
     "sharp": "^0.34.5"
   },
+  "overrides": {
+    "@react-native-async-storage/async-storage": "2.2.0"
+  },
   "private": true
 }
