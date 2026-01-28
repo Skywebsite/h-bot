@@ -79,8 +79,9 @@ yarn-error.log*
 .env.*.local
 
 # Android/iOS native folders (if using CNG/Prebuild)
-/android
-/ios
+# Note: Keep android/ios for EAS builds with native code
+# /android
+# /ios
 
 # Documentation
 *.md
