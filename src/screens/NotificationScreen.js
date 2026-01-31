@@ -14,25 +14,16 @@ import { LinearGradient } from 'expo-linear-gradient';
 // Using fetch API instead of axios for React Native compatibility
 import { Ionicons } from '@expo/vector-icons';
 
-// LOCAL DEVELOPMENT - Use appropriate URL based on platform
-// Android emulator uses 10.0.2.2 to access host machine's localhost
-// Physical Android device uses your computer's IP address
-// iOS simulator and web can use localhost
-const getApiUrl = () => {
-  // Check if we're in development mode
-  const isDev = typeof __DEV__ !== 'undefined' ? __DEV__ : true;
-  
-  if (isDev) {
-    if (Platform.OS === 'android') {
-      // Use your computer's IP address for physical device
-      // For emulator, change back to 'http://10.0.2.2:5000/api'
-      return 'http://10.156.236.116:5000/api'; // Physical Android device
-    }
-    return 'http://localhost:5000/api'; // iOS simulator or web
-  }
-  return 'https://d-bot-new-backedn-lxj9.vercel.app/api'; // Production App Server
-};
-const API_URL = getApiUrl();
+// LOCAL DEVELOPMENT - Use localhost for testing
+// For Android emulator use: http://10.0.2.2:5000/api
+// For iOS simulator use: http://localhost:5000/api
+// For physical device use: http://[your-computer-ip]:5000/api
+// For web use: http://localhost:5000/api
+const API_URL = Platform.OS === 'android' 
+  ? 'http://10.0.2.2:5000/api'  // Android emulator
+  : Platform.OS === 'web'
+  ? 'http://localhost:5000/api'  // Web
+  : 'http://localhost:5000/api'; // iOS simulator and others
 
 const NotificationScreen = ({ navigation, user }) => {
   const [notifications, setNotifications] = useState([]);

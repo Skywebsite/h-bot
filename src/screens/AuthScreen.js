@@ -12,6 +12,7 @@ import {
   Image,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import { Ionicons } from '@expo/vector-icons';
 import { auth } from '../../firebase';
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 
@@ -22,6 +23,9 @@ const AuthScreen = ({ onAuthSuccess }) => {
   const [name, setName] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [emailFocused, setEmailFocused] = useState(false);
+  const [passwordFocused, setPasswordFocused] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   // Load Google Fonts
   useEffect(() => {
@@ -63,8 +67,25 @@ const AuthScreen = ({ onAuthSuccess }) => {
 
 
   const handleEmailAuth = async () => {
-    if (!email.trim() || !password.trim()) {
-      setError('Please fill in all fields');
+    // Clear previous errors
+    setError('');
+    
+    // Validate email
+    if (!email.trim()) {
+      setError('Email is required');
+      return;
+    }
+    
+    // Validate password
+    if (!password.trim()) {
+      setError('Password is missing');
+      return;
+    }
+    
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email.trim())) {
+      setError('Please enter a valid email address');
       return;
     }
 
@@ -125,24 +146,11 @@ const AuthScreen = ({ onAuthSuccess }) => {
           <View style={styles.logoContainer}>
             <View style={styles.logoCircle}>
               <Image
-                source={require('../components/Robot Automation Gif.gif')}
+                source={require('../components/Beige and Orange Creative Agency Logo (1)-Photoroom.png')}
                 style={styles.logoImage}
                 resizeMode="contain"
               />
             </View>
-          </View>
-
-          {/* D-Bot Title */}
-          <View style={styles.titleContainer}>
-            <Text 
-              style={[
-                styles.titleText,
-                Platform.OS === 'web' && styles.titleTextWeb
-              ]}
-              {...(Platform.OS === 'web' && { className: 'honk-font' })}
-            >
-              D-Bot
-            </Text>
           </View>
 
           <Text style={styles.subtitle}>
@@ -172,11 +180,16 @@ const AuthScreen = ({ onAuthSuccess }) => {
           <View style={styles.inputContainer}>
             <Text style={styles.inputLabel}>Email</Text>
             <TextInput
-              style={styles.input}
+              style={[styles.input, emailFocused && styles.inputFocused]}
               placeholder="Enter your email"
               placeholderTextColor="#999"
               value={email}
-              onChangeText={setEmail}
+              onChangeText={(text) => {
+                setEmail(text);
+                setError(''); // Clear error when typing
+              }}
+              onFocus={() => setEmailFocused(true)}
+              onBlur={() => setEmailFocused(false)}
               keyboardType="email-address"
               autoCapitalize="none"
               autoCorrect={false}
@@ -185,15 +198,32 @@ const AuthScreen = ({ onAuthSuccess }) => {
 
           <View style={styles.inputContainer}>
             <Text style={styles.inputLabel}>Password</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="Enter your password"
-              placeholderTextColor="#999"
-              value={password}
-              onChangeText={setPassword}
-              secureTextEntry
-              autoCapitalize="none"
-            />
+            <View style={styles.passwordInputContainer}>
+              <TextInput
+                style={[styles.input, styles.passwordInput, passwordFocused && styles.inputFocused]}
+                placeholder="Enter your password"
+                placeholderTextColor="#999"
+                value={password}
+                onChangeText={(text) => {
+                  setPassword(text);
+                  setError(''); // Clear error when typing
+                }}
+                onFocus={() => setPasswordFocused(true)}
+                onBlur={() => setPasswordFocused(false)}
+                secureTextEntry={!showPassword}
+                autoCapitalize="none"
+              />
+              <TouchableOpacity
+                style={styles.eyeIcon}
+                onPress={() => setShowPassword(!showPassword)}
+              >
+                <Ionicons
+                  name={showPassword ? 'eye-off' : 'eye'}
+                  size={22}
+                  color="#FF6B35"
+                />
+              </TouchableOpacity>
+            </View>
           </View>
 
           <TouchableOpacity
@@ -255,16 +285,16 @@ const styles = StyleSheet.create({
   },
   logoContainer: {
     alignItems: 'center',
-    marginBottom: 20,
+    marginBottom: 8,
   },
   logoCircle: {
-    width: 120,
-    height: 120,
-    borderRadius: 60,
+    width: 250,
+    height: 250,
+    borderRadius: 125,
     backgroundColor: 'transparent',
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 16,
+    marginBottom: 8,
     overflow: 'hidden',
   },
   logoImage: {
@@ -303,9 +333,9 @@ const styles = StyleSheet.create({
   },
   subtitle: {
     textAlign: 'center',
-    color: '#666',
+    color: '#FF6B35', // Orange color
     fontSize: 15,
-    marginBottom: 20,
+    marginBottom: 8,
     fontWeight: '500',
   },
   errorContainer: {
@@ -326,7 +356,7 @@ const styles = StyleSheet.create({
   inputLabel: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#333',
+    color: '#FF8C42', // Different orange shade for labels
     marginBottom: 8,
   },
   input: {
@@ -339,6 +369,24 @@ const styles = StyleSheet.create({
     backgroundColor: '#fafafa',
     color: '#333',
   },
+  inputFocused: {
+    borderColor: '#FF6B35', // Orange border when focused
+    backgroundColor: '#fff',
+  },
+  passwordInputContainer: {
+    position: 'relative',
+    width: '100%',
+  },
+  passwordInput: {
+    paddingRight: 50, // Make room for eye icon
+  },
+  eyeIcon: {
+    position: 'absolute',
+    right: 12,
+    top: 12,
+    padding: 4,
+    zIndex: 1,
+  },
   primaryButton: {
     width: '100%',
     padding: 15,
@@ -346,10 +394,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 20,
-    backgroundColor: '#667eea',
+    backgroundColor: '#000000', // Black background
+    borderWidth: 2,
+    borderColor: '#000000', // Black border
   },
   primaryButtonText: {
-    color: 'white',
+    color: '#ffffff', // White text
     fontSize: 16,
     fontWeight: '600',
   },
